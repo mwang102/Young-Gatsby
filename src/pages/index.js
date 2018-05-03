@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Title from '../components/Title'
 import Form from '../components/Form'
 import BattleShipBoard from '../components/BattleShipBoard'
+import ShipCountView from '../components/ShipCountView'
 
 
 const Wrapper = styled.section`
@@ -135,12 +136,7 @@ class IndexPage extends React.Component{
 		
 		return (
 		  <Layout>
-		  	<ShipContainer>
-		  		<PlayerText> Ship Count</PlayerText>
-		  		<div> Ship 1 </div>
-		  		<div> Ship 2 </div>
-		  		<div> Ship 3 </div>
-		  	</ShipContainer>
+		  	<ShipCountView/>
 		  	{board1 !== undefined && <BattleShipBoard endTurn={endTurn} animate={animate} editTable={this.editTable} turn={turn} table={playerTable}/>}
 		  	<FormContainer>
 		  		<PlayerText> Current Player: {this.state.turn} </PlayerText>

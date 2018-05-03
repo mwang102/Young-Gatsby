@@ -4,7 +4,7 @@ import Row from './Row'
 
 const Board = styled.div`
 	display:flex;
-	flex:2;
+	flex:3;
 	flex-direction:column;
 	min-width: 500px;
 	min-height: 500px;
