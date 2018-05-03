@@ -4,6 +4,7 @@ import Row from './Row'
 
 const Board = styled.div`
 	display:flex;
+	flex:2;
 	flex-direction:column;
 	min-width: 500px;
 	min-height: 500px;
@@ -11,6 +12,10 @@ const Board = styled.div`
 
 
 export default class BattleShipBoard extends React.Component{
+
+	shouldComponentUpdate(nextProps){
+		return nextProps.endTurn == true ? true : false
+	}
 	render(){
 
 		let table = this.props.table.map((row, index)=>{

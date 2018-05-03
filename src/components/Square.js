@@ -47,7 +47,7 @@ export default class Square extends React.Component{
     super(props)
 
     this.state ={
-        flip:false,
+        flip:this.props.data == -1 || this.props.data == 2 ? true : false,
         squareValue:this.props.data
     }
 
@@ -64,6 +64,7 @@ export default class Square extends React.Component{
   }
  
   render(){
+
     const currentSquare = {row:this.props.rowNumber, column:this.props.columnNumber, data:this.props.data},
           randomNumber = Math.floor((Math.random() * 30) + 1),
           background = require('../images/' + randomNumber + '.svg')

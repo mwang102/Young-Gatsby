@@ -40,7 +40,9 @@ export default class Form extends React.Component{
 }
 
 const FormContainer = styled.div`
-	display:flex
+	display:flex;
+	align-items:center;
+	flex-direction:column;
 `;
 
 const Input = styled.input`
@@ -48,6 +50,10 @@ const Input = styled.input`
   margin: 0.5em;
   border: none;
   border-bottom: 2px solid palevioletred;
+
+  :focus{
+	    outline: none;
+	}
 `;
 
 const Button = styled.button`
@@ -55,7 +61,8 @@ const Button = styled.button`
   color:#fff;
   border:none;
   position:relative;
-  height:100%;
+  height:150x;
+  width:200px;
   font-size:1.3em;
   padding:0.2em 2em;
   cursor:pointer;

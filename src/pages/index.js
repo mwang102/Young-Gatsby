@@ -11,14 +11,25 @@ const Wrapper = styled.section`
   background: papayawhip;
 `;
 
+const FormContainer = styled.div`
+  flex:1;
+  margin: 0 auto;
+  text-align: center;
+
+`
+const Layout = styled.div`
+  display:flex
+`
 class IndexPage extends React.Component{
 	constructor(props){
 		super(props)
 		this.state = {
-			table1: undefined,
-			table2: undefined,
+			board1: undefined,
+			board2: undefined,
 			turn:1,
+			tempBoard: undefined,
 			animate:true,
+			endTurn: true
 		}
 
 		this.changePlayer = this.changePlayer.bind(this)
@@ -32,9 +43,12 @@ class IndexPage extends React.Component{
 	}
 
 	editTable(event){
-	
+
+		const { tempBoard, turn, board1, board2 } = this.state
+
 		if(event.data != -1 && event.data != 2){
-			let newTable = copy(this.state.turn ==  1 ? this.state.table1 : this.state.table2)
+
+			let temp = tempBoard == undefined ? copy(turn ==  1 ? board1 : board2) : tempBoard
 
 
 			function copy(o) {
@@ -47,10 +61,15 @@ class IndexPage extends React.Component{
 			   return output;
 			}
 
-			newTable[event.row][event.column] = event.data == 1 ? 2 : -1
+			temp[event.row][event.column] = event.data == 1 ? 2 : -1
+
+			this.setState({
+				endTurn:false,
+				tempBoard: temp,
+			})
 		/*
 			this.setState({
-				['table' + this.state.turn]: newTable,
+				tempBoard: tempBoard,
 				animate:false
 			})
 			*/
@@ -60,12 +79,24 @@ class IndexPage extends React.Component{
 	}
 
 	changePlayer(){
-		let nextPlayer = this.state.turn == 1 ? 2 : 1
+		const { turn, tempBoard } = this.state
+
+		let currentPlayer = turn == 1 ? 1: 2,
+			nextPlayer = turn == 1 ? 2 : 1
+
+			console.log(currentPlayer, nextPlayer)
 
 		this.setState({
 			turn: nextPlayer,
-			animate:true
+			animate:true,
+			endTurn: true,
+			['board' + currentPlayer]: tempBoard == undefined ? [this.state['board' + currentPlayer]] : tempBoard,
+			tempBoard: this.state['board' + nextPlayer],
+			//this.state.tempBoard == undefined ? 
+			//this.state.tempBoard 
+
 		})
+		
 	}
 
 	createTable(event){
@@ -73,8 +104,9 @@ class IndexPage extends React.Component{
 			columns = event.target.value[2]
 
 		if(rows < 10 && columns < 10 ){
-			let table1 = [],
-				table2 = []
+			let board1 = [],
+				board2 = []
+
 			for(let i = 0; i<rows; i++){
 				let row = []
 				for(let j = 0; j<columns; j++){
@@ -83,35 +115,45 @@ class IndexPage extends React.Component{
 					}else
 					row.push(1)
 				}
-				table1.push(row)
-				table2.push(row)
+				board1.push(row)
+				board2.push(row)
 			}
 			this.setState({
-				table1:table1,
-				table2:table2,
-				animate:true
+				board1:board1,
+				board2:board2,
+				animate:true,
+				tempBoard: undefined,
+				endTurn: true
 			})
 		}
 
 	}
 
 	render(){
-		const { turn, table2, table1, animate} = this.state,
-			  playerTable = turn == 1 ? table1 : table2
-			 
-			  console.log(table1, table2)
+		const { turn, board2, board1, animate, endTurn} = this.state,
+			  playerTable = turn == 1 ? board1 : board2
+		
 		return (
-		  <div>
-		    <Form createTable={this.createTable}/>
-		    <Button onClick={this.changePlayer}> Change Player </Button>
-		    <Button onClick={this.logTables}> Log Tables </Button>
-		    <h1> Current Player: {this.state.turn} </h1>
-		    {table1 !== undefined && <BattleShipBoard animate={animate} editTable={this.editTable} turn={turn} table={playerTable}/>}
-		    <Wrapper>
-			  <Title/>
-			</Wrapper>
-		    <Link to="/page-2/">Go to page 2</Link>
-		  </div>
+		  <Layout>
+		  	<ShipContainer>
+		  		<PlayerText> Ship Count</PlayerText>
+		  		<div> Ship 1 </div>
+		  		<div> Ship 2 </div>
+		  		<div> Ship 3 </div>
+		  	</ShipContainer>
+		  	{board1 !== undefined && <BattleShipBoard endTurn={endTurn} animate={animate} editTable={this.editTable} turn={turn} table={playerTable}/>}
+		  	<FormContainer>
+		  		<PlayerText> Current Player: {this.state.turn} </PlayerText>
+			    <Form createTable={this.createTable}/>
+			    <div>
+			    <Button onClick={this.changePlayer}> End Turn </Button>
+			    </div>
+			    <div>
+			    <Button onClick={this.logTables}> Log Tables </Button>
+			    </div>
+			    <Link to="/page-2/">Go to page 2</Link>
+		    </FormContainer>
+		  </Layout>
 		)
 	}
 
@@ -119,12 +161,20 @@ class IndexPage extends React.Component{
 
 export default IndexPage
 
+const ShipContainer = styled.div`
+	flex:1
+`
+
+const PlayerText = styled.h1`
+	color: #1AAB8A;
+`
 const Button = styled.button`
   background:#1AAB8A;
   color:#fff;
   border:none;
   position:relative;
-  height:100%;
+  height:150x;
+  width:200px;
   font-size:1.3em;
   padding:0.2em 2em;
   cursor:pointer;
