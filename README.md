@@ -1,6 +1,5 @@
 "# Young-Gatsby" Boom-BOOM
 
-remove
 
 ## Install
 
