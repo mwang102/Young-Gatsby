@@ -1,6 +1,5 @@
 "# Young-Gatsby" Boom-BOOM
 
-FIXED FOR REAL; FIRST EDIT
 
 ## Install
 
