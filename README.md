@@ -1,7 +1,7 @@
 "# Young-Gatsby" Boom-BOOM
 
 add
-plus ultra
+plus ultrarrr
 ## Install
 
 Make sure that you have the Gatsby CLI program installed:
